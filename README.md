@@ -102,7 +102,4 @@ Trang profile: [http://localhost:5173/profile](http://localhost:5173/profile)
 - Cách MQTT broker: [Cài đặt Local MQTT Broker trên Windows #1](https://www.youtube.com/watch?v=xLLFrLhegcw)
 - Bảo mật MQTT brokder với username, password: [Setting up User name and password for Mosquitto Mqtt Broker](https://www.youtube.com/watch?v=fknowuQJ9MA).
 
-### Lời cảm ơn
-
-- Photos: [Vũ Ngọc Khánh](https://www.facebook.com/vngckhahn)
-- Dev & Des: [Phạm Đắc Hiếu](https://www.facebook.com/hieu.hiihihaha/)
+# Author : Vu Dinh Hung
