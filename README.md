@@ -73,15 +73,18 @@ Truy cập vào địa chỉ: [http://localhost:3000]
 
 Trang dashboard: [http://localhost:5173/](http://localhost:5173/)
 
-![Dashboard](./dashboard.jpg)
+![image](https://github.com/HungQuyen2002/IOT/assets/117184603/06bb6bd5-95f5-4a24-b329-2f9b61729678)
+
 
 Trang dữ liệu cảm biến: [http://localhost:5173/datasensor](http://localhost:5173/datasensor)
 
-![Datasensor](./datasensor.jpg)
+![image](https://github.com/HungQuyen2002/IOT/assets/117184603/cc6829fd-72f7-4d8a-bec6-3a5da3596428)
+
 
 Trang lịch sử bật tắt đèn: [http://localhost:5173/actionhistory](http://localhost:5173/actionhistory)
 
-![actionHistory](./actionHistory.jpg)
+![image](https://github.com/HungQuyen2002/IOT/assets/117184603/d4b4ca8d-7811-44d9-98b9-8e1d3d072ad1)
+
 
 Trang profile: [http://localhost:5173/profile](http://localhost:5173/profile)
 ![image](https://github.com/HungQuyen2002/IOT/assets/117184603/86be9509-5b7e-46e3-a8dd-2d9f6cb5054e)
