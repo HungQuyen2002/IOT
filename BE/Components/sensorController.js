@@ -28,7 +28,7 @@ exports.getSensorData = async (req, res) => {
 
     // Đặt các tham số sắp xếp mặc định nếu chúng không được cung cấp
     let sortBy = req.query.sortBy || "createdAt";
-    let sortOrder = req.query.sortOrder || "asc";
+    let sortOrder = req.query.sortOrder || "desc";
 
     // Định nghĩa các cột và thứ tự sắp xếp hợp lệ
     const validSortColumns = ["temperature", "humidity", "light", "createdAt"];
@@ -70,32 +70,15 @@ exports.getSensorData = async (req, res) => {
         ${sortBy} ${sortOrder}
     `);
 
-    // Tính tổng số bản ghi đã lấy
-    const totalCount = allSensorData.recordset.length;
-
-    // Trích xuất các tham số phân trang
-    const { page = 1, limit = 10 } = req.query; //trích xuất giá trị của page và limit từ req.query (tham số truy vấn) của request. Nếu page hoặc limit không được cung cấp,thì mặc định là 1 và 10
-    const startIdx = (page - 1) * limit;
-    const endIdx = startIdx + limit;
-
-    // Phân trang và định dạng dữ liệu đã lấy
-    const sensorDataForPage = allSensorData.recordset
-      .slice(startIdx, endIdx) //sử dụng phương thức slice() để trích xuất một phần của recordset từ allSensorData, dựa trên startIdx và endIdx
-      // Sau khi phân trang dữ liệu, ánh xạ mỗi bản ghi trong dữ liệu đã phân trang thành một đối tượng mới
-      .map((data) => ({
+    // Trả về toàn bộ dữ liệu, không cần phân trang
+    res.json({
+      data: allSensorData.recordset.map((data) => ({
         id: data.id,
         temperature: data.temperature,
         humidity: data.humidity,
         light: data.light,
         createdAt: convertToVietnameseTime(data.createdAtUTC),
-      }));
-
-    // Gửi dữ liệu đã phân trang, tổng số và chi tiết phân trang dưới dạng phản hồi JSON
-    res.json({
-      total: totalCount,
-      data: sensorDataForPage,
-      currentPage: page,
-      totalPages: Math.ceil(totalCount / limit),
+      })),
     });
   } catch (error) {
     console.error(error);

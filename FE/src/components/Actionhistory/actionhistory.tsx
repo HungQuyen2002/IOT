@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { FaCircleChevronLeft, FaCircleChevronRight } from "react-icons/fa6";
+import { Table } from "antd";
 import axios from "axios"; // Import axios
 
 interface ActionData {
@@ -17,12 +17,12 @@ const Actionhistory = () => {
   const [searchByDevice, setSearchByDevice] = useState<string>("All");
   const [sortType, setSortType] = useState<string>("All");
   const [totalPages, setTotalPages] = useState<number>(0);
-  const itemsPerPage: number = 10;
+  // const itemsPerPage: number = 10;
 
   const fetchData = async (): Promise<void> => {
     try {
       let sortColumn = "createdAt";
-      let sortOrder = "asc";
+      let sortOrder = "desc";
 
       if (sortType !== "All") {
         const [column, order] = sortType.split(" ");
@@ -50,107 +50,36 @@ const Actionhistory = () => {
     }
   };
 
-  const updateTable = (): void => {
-    let tableData: ActionData[] = [...data];
-
-    if (searchByDevice !== "All") {
-      tableData = tableData.filter(
-        (rowData) =>
-          rowData.device.toLowerCase() === searchByDevice.toLowerCase()
-      );
-    }
-
-    if (searchByStatus !== "All") {
-      tableData = tableData.filter(
-        (rowData) =>
-          rowData.action.toLowerCase() === searchByStatus.toLowerCase()
-      );
-    }
-
-    // switch (sortType.split(" ")[0]) {
-    //   case "Device":
-    //   case "Action":
-    //     tableData.sort((a, b) => {
-    //       const order = sortType.split(" ")[1];
-    //       const field = sortType
-    //         .split(" ")[0]
-    //         .toLowerCase() as keyof ActionData;
-    //       return order === "Asc"
-    //         ? a[field].localeCompare(b[field])
-    //         : b[field].localeCompare(a[field]);
-    //     });
-    //     break;
-
-    //   default:
-    //     break;
-    // }
-
-    const startIndex: number = (currentPage - 1) * itemsPerPage;
-    const endIndex: number = startIndex + itemsPerPage;
-    setData(tableData.slice(startIndex, endIndex));
-  };
-
   const goToPage = (page: number) => {
     setCurrentPage(page);
-    // updateTable(page);
   };
 
   useEffect(() => {
     fetchData();
   }, [currentPage, sortType, searchByDevice, searchByStatus]);
 
-  useEffect(() => {
-    updateTable();
-  }, [searchByDevice, searchByStatus, sortType, currentPage]);
-
-  // Render Page
-  const renderPagination = (): JSX.Element[] => {
-    let pagesToShow: (number | string)[] = [];
-
-    if (totalPages <= 10) {
-      pagesToShow = Array.from({ length: totalPages }, (_, i) => i + 1);
-    } else if (currentPage <= 3) {
-      pagesToShow = [...Array(3).keys()].map((i) => i + 1);
-      pagesToShow.push("...");
-      pagesToShow.push(totalPages - 2, totalPages - 1, totalPages);
-    } else if (currentPage >= totalPages - 2) {
-      pagesToShow = [1, 2, 3];
-      pagesToShow.push("...");
-      pagesToShow.push(totalPages - 2, totalPages - 1, totalPages);
-    } else {
-      pagesToShow = [1, "..."];
-      pagesToShow.push(currentPage - 1, currentPage, currentPage + 1);
-      pagesToShow.push("...", totalPages);
-    }
-
-    return pagesToShow.map((page, index) => {
-      if (page === "...") {
-        return (
-          <span key={index} className="mx-1 px-3 py-1">
-            ...
-          </span>
-        );
-      }
-
-      return (
-        <button
-          key={index}
-          className={`mx-1 px-3 py-1 rounded ${
-            currentPage === page
-              ? "bg-gray-600 text-white"
-              : "bg-white text-black font-medium text-lg"
-          }`}
-          onClick={() => {
-            if (typeof page === "number") {
-              goToPage(page);
-            }
-          }}
-        >
-          {page}
-        </button>
-      );
-    });
-  };
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "DEVICE",
+      dataIndex: "device",
+      key: "device",
+    },
+    {
+      title: "ACTION",
+      dataIndex: "action",
+      key: "action",
+    },
+    {
+      title: "CREATED_AT",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+  ];
 
   return (
     <div>
@@ -200,7 +129,7 @@ const Actionhistory = () => {
             <option value="LED">LED</option>
           </select>
         </div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <select
             className="border border-gray-400 p-2 rounded-md mr-2"
             value={sortType}
@@ -213,67 +142,24 @@ const Actionhistory = () => {
             <option value="Action Desc">Action Desc</option>
           </select>
           <span>Sort By: {sortType}</span>
-        </div>
+        </div> */}
       </div>
 
       {/* Table  */}
-      <table className="tableData max-w-[1536px] w-5/6 border-collapse mt-10 mx-auto ">
-        <thead className="bg-black text-white border">
-          <tr>
-            <th className="px-2 py-1">ID</th>
-            <th className="px-2 py-1">DEVICE</th>
-            <th className="px-2 py-1">ACTION</th>
-            <th className="px-2 py-1">CREATED_AT</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {data.length > 0 ? (
-            data.map((rowData, index) => (
-              <tr key={index} className={index % 2 === 0 ? "bg-gray-200" : ""}>
-                <td className="border px-2 py-2 border-r-gray-500">
-                  {rowData.id}
-                </td>
-                <td className="border px-2 py-2 border-r-gray-500">
-                  {rowData.device}
-                </td>
-                <td className="border px-2 py-2 border-r-gray-500">
-                  {rowData.action}
-                </td>
-                <td className="border px-2 py-2">{rowData.createdAt}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={4} className="border px-4 py-2 text-center">
-                Không có dữ liệu
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      {/* ... (Pagination) */}
-      <div className="mt-4 flex justify-center items-center">
-        {currentPage > 1 && (
-          <button
-            className="mx-1 px-3 py-1 rounded bg-white text-black font-medium text-lg"
-            onClick={() => goToPage(currentPage - 1)}
-          >
-            <FaCircleChevronLeft className="text-2xl" />
-          </button>
-        )}
-
-        {renderPagination()}
-
-        {currentPage < totalPages && (
-          <button
-            className="mx-1 px-3 py-1 rounded bg-white text-black font-medium text-lg"
-            onClick={() => goToPage(currentPage + 1)}
-          >
-            <FaCircleChevronRight className="text-2xl" />
-          </button>
-        )}
-      </div>
+      <Table
+        dataSource={data}
+        columns={columns}
+        pagination={{
+          total: totalPages,
+          current: currentPage,
+          // pageSize: itemsPerPage,
+          onChange: (page) => goToPage(page),
+          // total: 500,
+        }}
+        rowClassName={(record, index) => (index % 2 === 1 ? "bg-gray-200" : "")}
+        className="tableData max-w-[1536px] w-5/6  border-collapse mt-10 mx-auto "
+        scroll={{ y: "calc(100vh - 350px)" }}
+      />
     </div>
   );
 };

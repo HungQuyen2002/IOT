@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const connectDB = require("./Components/db");
 const { convertToVietnameseTime } = require("./Components/dateConverter");
-const cors = require("cors");  
+const cors = require("cors");
 const {
   saveSensorData,
   getSensorData,
@@ -11,6 +11,7 @@ const {
   saveAction,
   getActionHistory,
 } = require("./Components/actionController");
+const mqttClient = require("./Components/mqttListener"); // Import MQTT client
 
 const app = express();
 
@@ -18,6 +19,11 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+
+// Khởi chạy MQTT listener
+mqttClient.on("connect", () => {
+  console.log("MQTT listener connected to broker");
+});
 
 connectDB()
   .then(() => {

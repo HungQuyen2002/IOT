@@ -4,7 +4,7 @@ const { convertToVietnameseTime } = require("./dateConverter");
 //Hàm xử lý route của Express.js để lưu dữ liệu hành động vào cơ sở dữ liệu.
 exports.saveAction = (req, res) => {
   const { device, action } = req.body; // Trích xuất device và action
-  const request = new sql.Request();// Tạo yêu cầu SQL mới
+  const request = new sql.Request(); // Tạo yêu cầu SQL mới
 
   //  Thực hiện truy vấn SQL để chèn dữ liệu vào bảng ActionHistory
   request.query(
@@ -71,34 +71,17 @@ exports.getActionHistory = async (req, res) => {
         ${sortBy} ${sortOrder}
     `);
 
-    // Tính tổng số bản ghi đã lấy
-    const totalCount = allActionHistory.recordset.length;
-
-    // Trích xuất các tham số phân trang
-    const { page = 1, limit = 10 } = req.query;
-    const startIdx = (page - 1) * limit;
-    const endIdx = startIdx + limit;
-
-    // Phân trang và định dạng dữ liệu đã lấy
-    const actionHistoryForPage = allActionHistory.recordset
-      .slice(startIdx, endIdx)
-      .map((data) => ({
+    // Trả về toàn bộ dữ liệu, không cần phân trang
+    res.json({
+      data: allActionHistory.recordset.map((data) => ({
         id: data.id,
         device: data.device,
         action: data.action,
         createdAt: convertToVietnameseTime(data.createdAtUTC),
-      }));
-
-    // Gửi dữ liệu đã phân trang, tổng số và chi tiết phân trang dưới dạng phản hồi JSON
-    res.json({
-      total: totalCount,
-      data: actionHistoryForPage,
-      currentPage: page,
-      totalPages: Math.ceil(totalCount / limit),
+      })),
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to get action history" });
   }
 };
-
