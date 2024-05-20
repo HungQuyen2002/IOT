@@ -33,28 +33,41 @@ Lấy source code từ trên github về máy.
 https://github.com/HungQuyen2002/IOT.git
 ```
 
-### Bước 2: Cài node_modules
 
-Tải tất cả các package cần thiết để chạy các dự án node js.
 
-```
-Chạy file install_run.bat
-```
+### Bước 2: Sửa `db.js` ở BE --> Kết nối DB
 
-### Bước 3: Thêm `.env` vào dự án
-
-Vào folders `server/` tạo file `.env` đây là file để hết tất cả các biến môi trường.
-
+Vào folders `BE/` trong Components tìm file `db.js` để sửa tương ứng với DB 
 VD:
 
 ```JS
-HOST = localhost
-USER = root
-PASSWORD =
-DB = IoT
+const sql = require("mssql");
+
+const dbConfig = {
+  user: "sa",
+  password: "123",
+  server: "localhost",
+  database: "IOT",
+  encrypt: false,
+};
+
+const connectDB = () => {
+  return new Promise((resolve, reject) => {
+    sql.connect(dbConfig, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log("Connected to SQL Server");
+        resolve();
+      }
+    });
+  });
+};
+
+module.exports = connectDB;
 ```
 
-### Bước 4: Chạy dự án
+### Bước 3: Chạy dự án
 chạy 2 folder BE và FE đều bằng 
 ```
 npm run dev 
