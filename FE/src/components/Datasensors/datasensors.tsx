@@ -3,6 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { Pagination, Table } from "antd";
 import axios from "axios"; // Import axios
 import Column from "antd/es/table/Column";
+import { Link } from "react-router-dom";
 
 const Datasensors = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -13,7 +14,6 @@ const Datasensors = () => {
 
   const [totalPages, setTotalPages] = useState<number>(0);
 
-  // const itemsPerPage: number = 10;
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -59,21 +59,21 @@ const Datasensors = () => {
       {/* Menu  */}
       <div className="menu max-w-[1536px] flex justify-center items-center mx-auto">
         <div className="container bg-gradient-to-r from-blue-400 to-red-600 text-white h-16 flex items-center justify-around border-b border-gray-400 mx-2 rounded-md">
-          <a href="/" className="text-2xl font-semibold  ">
+          <Link to="/" className="text-2xl font-semibold ">
             DASHBOARD
-          </a>
-          <a
-            href="/datasensors"
-            className="text-2xl font-semibold boder border-b-2"
+          </Link>
+          <Link
+            to="/datasensors"
+            className="text-2xl font-semibold  border-b-2"
           >
             DATA SENSOR
-          </a>
-          <a href="/actionhistory" className="text-2xl font-semibold ">
+          </Link>
+          <Link to="/actionhistory" className="text-2xl font-semibold">
             ACTION HISTORY
-          </a>
-          <a href="/profile" className="text-2xl font-semibold ">
+          </Link>
+          <Link to="/profile" className="text-2xl font-semibold">
             PROFILE
-          </a>
+          </Link>
         </div>
       </div>
       <h1 className="text-center text-black text-3xl font-bold my-4">
@@ -99,6 +99,7 @@ const Datasensors = () => {
             <option value="temperature">Temperature</option>
             <option value="humidity">Humidity</option>
             <option value="light">Light</option>
+            <option value="windspeed">Windspeed</option>
           </select>
         </div>
         <div className="flex items-center">
@@ -136,6 +137,7 @@ const Datasensors = () => {
         <Column title="TEMPERATURE" dataIndex="temperature" key="temperature" />
         <Column title="HUMIDITY" dataIndex="humidity" key="humidity" />
         <Column title="LIGHT" dataIndex="light" key="light" />
+        <Column title="WINDSPEED" dataIndex="windspeed" key="windspeed" />
         <Column title="CREATED_AT" dataIndex="createdAt" key="createdAt" />
       </Table>
       {/* <Pagination defaultCurrent={1} total={500} /> */}

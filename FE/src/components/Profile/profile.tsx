@@ -1,5 +1,6 @@
 // Profile.tsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Profile: React.FC = () => {
   return (
@@ -10,21 +11,21 @@ const Profile: React.FC = () => {
       {/* Menu  */}
       <div className="menu max-w-[1536px] flex justify-center items-center mx-auto">
         <div className="container bg-gradient-to-r from-blue-400 to-red-600 text-white h-16 flex items-center justify-around border-b border-gray-400 mx-2 rounded-md">
-          <a href="/" className="text-2xl font-semibold  ">
+          <Link to="/" className="text-2xl font-semibold ">
             DASHBOARD
-          </a>
-          <a href="/datasensors" className="text-2xl font-semibold ">
+          </Link>
+          <Link to="/datasensors" className="text-2xl font-semibold">
             DATA SENSOR
-          </a>
-          <a href="/actionhistory" className="text-2xl font-semibold ">
+          </Link>
+          <Link to="/actionhistory" className="text-2xl font-semibold">
             ACTION HISTORY
-          </a>
-          <a
-            href="/profile"
-            className="text-2xl font-semibold boder border-b-2"
+          </Link>
+          <Link
+            to="/profile"
+            className="text-2xl font-semibold border-b-2"
           >
             PROFILE
-          </a>
+          </Link>
         </div>
       </div>
 

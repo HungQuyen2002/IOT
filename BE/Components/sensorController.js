@@ -5,12 +5,12 @@ const { convertToVietnameseTime } = require("./dateConverter");
 
 // Hàm xử lý route của Express.js để lưu dữ liệu cảm biến vào cơ sở dữ liệu.
 exports.saveSensorData = (req, res) => {
-  const { temp, hum, light } = req.body; // Trích xuất temp, hum, và light từ body của request
+  const { temp, hum, light, windspeed} = req.body; // Trích xuất temp, hum, và light từ body của request
   const request = new sql.Request(); // Tạo yêu cầu SQL mới
 
   // Thực hiện truy vấn SQL để chèn dữ liệu cảm biến vào bảng SensorData
   request.query(
-    `INSERT INTO SensorData (temperature, humidity, light) VALUES (${temp}, ${hum}, ${light})`,
+    `INSERT INTO SensorData (temperature, humidity, light, windspeed) VALUES (${temp}, ${hum}, ${light},${windspeed} )`,
     (err, result) => {
       if (err) {
         console.error(err);
@@ -31,7 +31,7 @@ exports.getSensorData = async (req, res) => {
     let sortOrder = req.query.sortOrder || "desc";
 
     // Định nghĩa các cột và thứ tự sắp xếp hợp lệ
-    const validSortColumns = ["temperature", "humidity", "light", "createdAt"];
+    const validSortColumns = ["temperature", "humidity", "light", "createdAt","windspeed"];
     const validSortOrders = ["asc", "desc"];
 
     // Kiểm tra các tham số sắp xếp --> nếu khác các tham số sắp xếp thì trả về lỗi
@@ -49,7 +49,7 @@ exports.getSensorData = async (req, res) => {
     // Kiểm tra cột tìm kiếm
     if (searchBy && searchValue) {
       // Tạo một mảng validSearchColumns
-      const validSearchColumns = ["temperature", "humidity", "light"];
+      const validSearchColumns = ["temperature", "humidity", "light","windspeed"];
       // Kiểm tra cột tìm kiếm
       if (!validSearchColumns.includes(searchBy)) {
         return res.status(400).json({ message: "Invalid search column" });
@@ -77,6 +77,7 @@ exports.getSensorData = async (req, res) => {
         temperature: data.temperature,
         humidity: data.humidity,
         light: data.light,
+        windspeed:data.windspeed,
         createdAt: convertToVietnameseTime(data.createdAtUTC),
       })),
     });

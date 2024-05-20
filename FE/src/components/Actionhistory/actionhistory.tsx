@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Table } from "antd";
 import axios from "axios"; // Import axios
+import { Link } from "react-router-dom";
 
 interface ActionData {
   id: number;
@@ -86,21 +87,21 @@ const Actionhistory = () => {
       {/* Menu  */}
       <div className="menu max-w-[1536px] flex justify-center items-center mx-auto">
         <div className="container bg-gradient-to-r from-blue-400 to-red-600 text-white h-16 flex items-center justify-around border-b border-gray-400 mx-2 rounded-md">
-          <a href="/" className="text-2xl font-semibold  ">
+          <Link to="/" className="text-2xl font-semibold ">
             DASHBOARD
-          </a>
-          <a href="/datasensors" className="text-2xl font-semibold ">
+          </Link>
+          <Link to="/datasensors" className="text-2xl font-semibold">
             DATA SENSOR
-          </a>
-          <a
-            href="/actionhistory"
-            className="text-2xl font-semibold boder border-b-2"
+          </Link>
+          <Link
+            to="/actionhistory"
+            className="text-2xl font-semibold  border-b-2"
           >
             ACTION HISTORY
-          </a>
-          <a href="/profile" className="text-2xl font-semibold ">
+          </Link>
+          <Link to="/profile" className="text-2xl font-semibold">
             PROFILE
-          </a>
+          </Link>
         </div>
       </div>
       <h1 className="text-center text-black text-3xl font-bold my-4">
@@ -124,25 +125,11 @@ const Actionhistory = () => {
             value={searchByDevice}
             onChange={(e) => setSearchByDevice(e.target.value)}
           >
-            <option value="All">All Devices</option>
+            <option value="All">All</option>
             <option value="FAN">FAN</option>
             <option value="LED">LED</option>
           </select>
         </div>
-        {/* <div className="flex items-center">
-          <select
-            className="border border-gray-400 p-2 rounded-md mr-2"
-            value={sortType}
-            onChange={(e) => setSortType(e.target.value)}
-          >
-            <option value="All">All</option>
-            <option value="Device Asc">Device Asc</option>
-            <option value="Device Desc">Device Desc</option>
-            <option value="Action Asc">Action Asc</option>
-            <option value="Action Desc">Action Desc</option>
-          </select>
-          <span>Sort By: {sortType}</span>
-        </div> */}
       </div>
 
       {/* Table  */}
@@ -152,7 +139,7 @@ const Actionhistory = () => {
         pagination={{
           total: totalPages,
           current: currentPage,
-          // pageSize: itemsPerPage,
+
           onChange: (page) => goToPage(page),
           // total: 500,
         }}
